@@ -30,24 +30,24 @@ class Calendar {
   #calculateMonth() {
     this.#dayList = [];
     
-    const month = this.#initedDate.getMonth() + this.#monthOffset;
     const year = this.#initedDate.getFullYear();
+    const month = this.#initedDate.getMonth() + this.#monthOffset;
 
-    const firstDate = new Date(year, month, 1);
-    const lastDate = new Date(year, month + 1, 0);
+    const startOfMonth = new Date(year, month, 0);
+    const endOfMonth = new Date(year, month + 1, 0);
 
-    const lastDay = lastDate.getDate() + 1;
+    const lastDay = endOfMonth.getDate() + 1;
 
     // week day format: [0, ..., 6];
-    const startWeekDayIndex = firstDate.getDay();
-    const endWeekDayIndex = lastDate.getDay();
+    const startWeekDayIndex = startOfMonth.getDay();
+    const endWeekDayIndex = endOfMonth.getDay();
 
-    const weekDayLoopStartIndex = 1 - (startWeekDayIndex === 0
-      ? 6 - startWeekDayIndex
-      : startWeekDayIndex - 1);
-    const weekDayLoopEndIndex = lastDay + (endWeekDayIndex === 0
-      ? endWeekDayIndex
-      : 7 - endWeekDayIndex);
+    const weekDayLoopStartIndex = startWeekDayIndex === 0
+      ? 1
+      : 1 - startWeekDayIndex;
+    const weekDayLoopEndIndex = endWeekDayIndex === 0
+      ? lastDay
+      : lastDay + 7 - endWeekDayIndex;
 
     const today = new Date().setHours(0, 0, 0, 0);
 
@@ -60,7 +60,7 @@ class Calendar {
           date,
           isPastDay: dateInTime < today,
           isPrevMonthDay: date.getMonth() < month,
-          isNextMonthDay: date.getMonth() > month, // date.getMonth() > month,
+          isNextMonthDay: date.getMonth() > month,
           isToday: today === dateInTime,
         })
       );
