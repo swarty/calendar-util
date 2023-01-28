@@ -7,6 +7,7 @@ class Calendar {
     this.#initedDate = date
       ? new Date(new Date(date).setHours(0, 0, 0, 0))
       : new Date(new Date().setHours(0, 0, 0, 0));
+    this.reset();
   }
 
   #createDay({
